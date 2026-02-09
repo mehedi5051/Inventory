@@ -5,11 +5,15 @@ namespace App\Http\Controllers\auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class UserController extends Controller
 {
     function userRegistration(Request $request){
-   return User::create([
+
+    try{
+
+       User::create([
             'fristname' => $request->fristname,
             'lastname' => $request->lastname,
             'email' => $request->email,
@@ -18,6 +22,23 @@ class UserController extends Controller
 
 
         ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User registration successful',
+          
+        ], 201);
+
+    }
+    catch(Exception $e){
+        return response()->json([
+            'status' => 'error',
+            // 'message' => 'user registration failed'
+              'message' => $e->getMessage()
+        ], 500);
+
+    }
+
     }
     
 }
