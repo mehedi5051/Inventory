@@ -8,7 +8,7 @@ use Firebase\JWT\Key;
 
 
 class JWTToken {
-    function createToken($userEmail){
+ public static function CreateToken($userEmail){
          $key = env('JWT_key');
         // Verification logic would go here
         $payLoad = [
@@ -24,7 +24,7 @@ class JWTToken {
 
     }
 
-    function verifyToken($token){
+ public static function verifyToken($token){
 
     try{
         

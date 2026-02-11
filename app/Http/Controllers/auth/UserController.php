@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\auth;
 
+use Exception;
 use App\Models\User;
+use App\Helper\JWTToken;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Exception;
 
 class UserController extends Controller
 {
@@ -39,6 +40,42 @@ class UserController extends Controller
 
     }
 
+    }
+
+
+    function userlogin(Request $request){
+
+        $count=user::where('email', '=', $request->input('email'))
+         ->where('password', '=', $request->input('password'))
+         ->count();
+
+
+
+
+// $jwt = new JWTToken();
+// $token = $jwt->CreateToken($request->input('email'));
+
+
+
+
+         if($count==1){
+            $token = JWTToken::CreateToken($request->input('email'));  
+            return response()->json([
+                'status' => 'success',
+                'message' => "User Login  successful",
+                'token' => $token
+            ]);
+
+         }
+         else {
+            return response()->json([
+                'status' => 'error',
+                'message' => "User Login failed"
+            ]);
+         }
+
+
+         
     }
     
 }
