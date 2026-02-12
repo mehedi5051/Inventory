@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+
+//user registration function
     function userRegistration(Request $request){
 
     try{
@@ -42,6 +44,8 @@ class UserController extends Controller
 
     }
 
+
+    // user login function
 
     function userlogin(Request $request){
 
