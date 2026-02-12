@@ -81,5 +81,25 @@ class UserController extends Controller
 
          
     }
+
+    
+
+
+    function sendOtpCode(Request $request){
+        $email = $request->input('email');
+        $otp = rand(100000, 999999);
+        $count = User::where('email', $request->input('email'))->count();
+
+ if($count == 1){
+
+ }
+ else{
+    return response()->json([
+        'status' => 'error',
+        'message' => "Email not found"
+    ], 404);
+ }
+
+    }
     
 }
