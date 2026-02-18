@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\auth;
 
-use Exception;
-use App\Models\User;
 use App\Helper\JWTToken;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\OTPMail;
+use App\Models\User;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
 
 class UserController extends Controller
 {
@@ -91,6 +94,11 @@ class UserController extends Controller
         $count = User::where('email', $request->input('email'))->count();
 
  if($count == 1){
+    //otp email address 
+   Mail::to($email)->send(new OTPMail($otp));
+
+   User::where('email', '=',$email)->update(['otp']);
+ 
 
  }
  else{
