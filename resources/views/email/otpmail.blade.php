@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
         <div class="border p-4 shadow-sm">
           <h5 class="text-center mb-4">Verification Code</h5>
 
-          <p>Dear {{User_Name}},</p>
+          <p>Dear {{$otp}},</p>
           <p>Please use the OTP below to proceed:</p>
 
           <div class="alert alert-success text-center fs-4 fw-bold">
@@ -32,6 +32,31 @@
       </div>
     </div>
   </div>
+
+</body>
+</html> --}}
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OTP Code</title>
+</head>
+<body>
+
+  <h3>Verification Code</h3>
+
+  <p>Your OTP is:</p>
+
+  <h2>{{ $otp }}</h2>
+
+  <p>This OTP will expire in 2 minutes.</p>
+
+  <p>Inventory System</p>
 
 </body>
 </html>

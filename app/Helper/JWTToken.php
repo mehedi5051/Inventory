@@ -3,7 +3,7 @@
 namespace App\Helper;
 
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use Firebase\JWT\key;
 
 
 
@@ -24,6 +24,22 @@ class JWTToken {
 
     }
 
+    public static function CreateTokenForResetPassword($userEmail){
+       $key = env('JWT_key');
+        
+       $payload = [
+        'iss' => 'laravel-token',
+        'iat' => time(),
+        'exp' => time() + (60*20),
+        'userEmail' => $userEmail
+
+       ];
+
+       return JWT::encode($payload, $key, 'HS256');
+
+    }
+
+
  public static function verifyToken($token){
 
     try{
@@ -41,4 +57,6 @@ class JWTToken {
 
        
     }
+
+
 }
