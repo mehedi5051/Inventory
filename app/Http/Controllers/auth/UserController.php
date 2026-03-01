@@ -143,7 +143,7 @@ class UserController extends Controller
          $currenTime = Carbon::now();
          $otpSentTime = Carbon::parse($user->updated_at);
          $otpExpireTime = $otpSentTime->diffInMinutes($currenTime);
-         if($otpExpireTime > 5){
+         if($otpExpireTime > 10){
             return response()->json([
                 'status' => 'error',
                 'message' => "OTP expired"
@@ -177,48 +177,32 @@ class UserController extends Controller
     }
 
 
-// function verifyOtpCode(Request $request)
-// {
-//     try {
-//         $email = $request->input('email');
-//         $otp = $request->input('otp');
+  
+    function resetPassword(Request $request){ 
 
-//         // ১. ডাটাবেজে ইউজার এবং OTP চেক করা
-//         $user = User::where('email', '=', $email)
-//                     ->where('otp', '=', $otp)
-//                     ->first(); // count() এর বদলে first() ব্যবহার করা ভালো
+    try{
 
-//         if($user){
-//             // ২. OTP রিসেট করা
-//             User::where('email', '=', $email)->update(['otp' => '0']); // null এর বদলে '0' দিয়ে ট্রাই করুন
+      $email = $request->header('email');
+        $newPassword = $request->input('newPassword');
 
-//             // ৩. টোকেন তৈরি (নিশ্চিত হয়ে নিন এই মেথডটি আপনার হেল্পার ক্লাসে আছে কি না)
-//             $token = JWTToken::CreateTokenForResetPassword($email);
-            
-//             return response()->json([
-//                 'status' => 'success',
-//                 'message' => "OTP verification successful",
-//                 'token' => $token
-//             ], 200);
-
-//         } else {
-//             return response()->json([
-//                 'status' => 'error',
-//                 'message' => "Invalid OTP"
-//             ], 401);
-//         }
-
-//     } catch (Exception $e) {
-//         // এই লাইনটি আপনাকে আসল সমস্যা বলে দেবে
-//         return response()->json([
-//             'status' => 'error',
-//             'message' => $e->getMessage() 
-//         ], 500);
-//     }
-// }
+        User::where ('email', '=', $email)->update(['password' => $newPassword]);
+        return response()->json([
+            'status' => 'success',
+            'message' => "Password reset successful"
+        ]);
 
 
 
-
+    }
+    catch(Exception $e){
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+      
+    }
     
  }
+
+
+}
