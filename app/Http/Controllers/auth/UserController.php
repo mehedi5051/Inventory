@@ -8,6 +8,7 @@ use App\Mail\OTPMail;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -132,12 +133,25 @@ class UserController extends Controller
         $email = $request->input('email');
         $otp = $request->input('otp');
 
-        $count = User::where('email', '=', $email)->where('otp', '=', $otp)->count();
+        $user = User::where('email', '=', $email)->where('otp', '=', $otp)->first();
 
 
-        if($count==1){
+        if($user){
             // Databse otp update
             User::where('email', '=' , $email)->update(['otp' => 0]);
+
+         $currenTime = Carbon::now();
+         $otpSentTime = Carbon::parse($user->updated_at);
+         $otpExpireTime = $otpSentTime->diffInMinutes($currenTime);
+         if($otpExpireTime > 5){
+            return response()->json([
+                'status' => 'error',
+                'message' => "OTP expired"
+            ], 401);
+         }
+
+
+            
 
 
    // OTP verification successful, generate JWT token for password reset
